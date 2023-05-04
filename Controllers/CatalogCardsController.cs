@@ -6,16 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LibraryCW.Models;
+using LibraryCW.Models.ViewModels;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LibraryCW.Controllers
 {
     public class CatalogCardsController : Controller
     {
         private readonly AppDBContext _context;
+        private readonly IWebHostEnvironment _appEnvironment;
 
-        public CatalogCardsController(AppDBContext context)
+        public CatalogCardsController(AppDBContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
         }
 
         // GET: CatalogCards
@@ -42,7 +46,18 @@ namespace LibraryCW.Controllers
                 return NotFound();
             }
 
-            return View(catalogCard);
+            if (!catalogCard.Image.IsNullOrEmpty())
+            {
+                byte[] imageData = System.IO.File.ReadAllBytes(_appEnvironment.WebRootPath + catalogCard.Image);
+                ViewBag.Image = imageData;
+            }
+            else { ViewBag.Image = null; }
+
+            CardAndBook card = new CardAndBook();
+            card.CatalogCard = catalogCard;
+            card.Books = _context.Books.Where(b => b.CatalogCardId == catalogCard.Id);
+
+            return View(card);
         }
 
         // GET: CatalogCards/Create

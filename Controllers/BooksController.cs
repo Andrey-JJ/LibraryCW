@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LibraryCW.Models;
+using LibraryCW.Models.ViewModels;
 
 namespace LibraryCW.Controllers
 {
@@ -42,7 +43,11 @@ namespace LibraryCW.Controllers
                 return NotFound();
             }
 
-            return View(book);
+            BookIssues bookIssues = new BookIssues();
+            bookIssues.Book = book;
+            bookIssues.Issues = _context.Issues.Where(i => i.BookId == book.Id);
+
+            return View(bookIssues);
         }
 
         // GET: Books/Create

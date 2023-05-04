@@ -12,6 +12,6 @@ namespace LibraryCW.Models
         [Display(Name = "Отчество")]
         public string? MidName { get; set; }
         [Display(Name = "ФИО")]
-        public string FullName { get; set; }
+        public string FullName { get => $"{Name.Substring(0,1)}. {MidName.Substring(0,1)}. {LastName}"; }
     }
 }
