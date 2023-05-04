@@ -1,0 +1,67 @@
+﻿@model IEnumerable<LibraryCW.Models.Issue>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p>
+    <a asp-action="Create" type="submit" class="btn btn-1">Добавить запись</a>
+</p>
+<p>
+    <a asp-controller="FromBookingToIssue" asp-action="GetBooking" type="submit" class="btn btn-1">Выбрать из брони</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Book)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Subscriber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Librarian)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IssueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subscriber.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Librarian.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IssueDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReturnDate)
+            </td>
+            <td>
+                    <div>
+                        <a asp-action="Edit" asp-route-id="@item.Id" type="submit" class="btn btn-edit">Edit</a>
+                    </div>
+                    <div>
+                        <a asp-action="Details" asp-route-id="@item.Id" type="submit" class="btn btn-1">Details</a>
+                    </div>
+                    <div>
+                        <a asp-action="Delete" asp-route-id="@item.Id" type="submit" class="btn btn-delete">Delete</a>
+                    </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
